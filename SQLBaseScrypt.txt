@@ -3,7 +3,7 @@
    `name` varchar(25) NOT NULL DEFAULT 'undefined',
    `age` int(11) NOT NULL DEFAULT '0',
    `isAdmin` bit(1) NOT NULL DEFAULT b'0',
-   `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    PRIMARY KEY (`id`),
   KEY `date` (`createDate`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
