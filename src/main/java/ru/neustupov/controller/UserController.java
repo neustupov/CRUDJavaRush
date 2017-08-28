@@ -52,6 +52,39 @@ public class UserController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
+    @RequestMapping(value="/user.do", method=RequestMethod.GET)
+    public String doActions2(
+            @ModelAttribute User user,
+            Map<String, Object> map,
+            @RequestParam("page") String inputPage
+    ){
+
+        try {
+            if (inputPage.length()==0 || inputPage==null)setPage(1);
+            else{
+                setPage(Integer.parseInt(inputPage));
+                if (getPage()<=0)setPage(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("PAGE not corrected value");
+            // TODO: handle exception
+        }
+
+
+        allDataSize=userService.getAllUserNumber();
+
+        numberOfPages=allDataSize%recordsPerPage==0?allDataSize/recordsPerPage:allDataSize/recordsPerPage+1;
+
+        map.put("currentPage", getPage());
+        map.put("noOfPages", numberOfPages);
+        map.put("user", user);
+        map.put("usersList", userService.showOnePage(page, recordsPerPage));
+
+        return "user";
+
+    }
+
     @RequestMapping(value = "/user.do", method = RequestMethod.POST)
     public String doActions(@ModelAttribute User user, BindingResult result, @RequestParam String action,
                             Map<String, Object> map) {
