@@ -1,118 +1,135 @@
 package ru.neustupov.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.neustupov.model.User;
 import ru.neustupov.service.UserService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class UserController {
 
+    private static int id = 0;
+
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    private int recordsPerPage = 3;
-    private int numberOfPages, allDataSize, page;
-
-    public int getPage() {
-        return page;
+    /**
+     * Создание нового пользователя.
+     * <p>
+     * Если пользователя нет (id == 0), создаём нового. Если есть, обновляем того, что есть.
+     *
+     * @param user
+     * @return редирект в root
+     */
+    @RequestMapping(value = "users/add", method = RequestMethod.POST)
+    public String addUser(@ModelAttribute("user") User user) {
+        if (user.getId() == 0) userService.add(user);
+        else userService.edit(user);
+        return "redirect:/";
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    /**
+     * Удаление пользователя по ID.
+     *
+     * @param id
+     * @return редирект в root
+     */
+    @RequestMapping("/remove/{id}")
+    public String removeUser(@PathVariable("id") int id) {
+        this.userService.delete(id);
+        return "redirect:/";
     }
 
-    @RequestMapping("/")
-    public String someAction(@ModelAttribute User model, Map<String, Object> map) {
-        page = 1;
-        allDataSize = userService.getAllUserNumber();
-        numberOfPages = allDataSize % recordsPerPage == 0 ? allDataSize / recordsPerPage :
-                allDataSize / recordsPerPage + 1;
-        User user = new User();
-        map.put("user", user);
-        map.put("usersList", userService.showOnePage(page, recordsPerPage));
-        map.put("currentPage", getPage());
-        map.put("noOfPages", numberOfPages);
-        return "user";
+    /**
+     * Изменение данных пользователя.
+     *
+     * Метод получает id и экземпляр модели.
+     *
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping("/edit/{id}")
+    public String editUser(@PathVariable("id") int id, Model model) {
+        UserController.id = userService.getUser(id).getId();
+        model.addAttribute("listUsers", userService.getAllUsers());
+        return "redirect:/";
     }
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:MM:SS");
-        dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    @RequestMapping("userdata{id}")
+    public String userData(@PathVariable("id") int id, Model model) {
+        model.addAttribute("user", userService.getUser(id));
+        return "redirect:/";
     }
 
-    @RequestMapping(value="/user.do", method=RequestMethod.GET)
-    public String doActions2(
-            @ModelAttribute User user,
-            Map<String, Object> map,
-            @RequestParam("page") String inputPage
-    ){
+    /**
+     * Метод пейджинга.
+     *
+     * Он срабатывает при запросе "/". Далее происходит следующее:
+     * В метод передаётся номер страницы и поисковый запрос в String, если он есть.
+     * Далее — если запрос есть — список наполняется только объектами User, имена которых содержат строку запроса.
+     * Если его нет — копируется основной список.
+     *
+     * Список отправляется в модель, которую и возвращает метод.
+     *
+     * @param page — номер страницы.
+     * @param userName — поисковый запрос.
+     * @return модель, аттрибуты которой участвуют при наполнении списка.
+     */
+    @RequestMapping(value = "/")
+    public ModelAndView listOfUsers(@RequestParam(required = false) Integer page,
+                                    @RequestParam(required = false) String userName) {
+        ModelAndView modelAndView = new ModelAndView("index");
+        if (id != 0) {
+            modelAndView.addObject("user", userService.getUser(id));
+            id = 0;
+        } else {
+            modelAndView.addObject("user", new User());
+        }
 
-        try {
-            if (inputPage.length()==0 || inputPage==null)setPage(1);
-            else{
-                setPage(Integer.parseInt(inputPage));
-                if (getPage()<=0)setPage(1);
+        List<User> users = null;
+        if (userName == null || userName.length() < 3) {
+            users = userService.getAllUsers();
+        } else {
+            List<User> tempUsers = userService.getAllUsers();
+            users = new ArrayList<User>();
+            for (User tempUser : tempUsers) {
+                if (tempUser.getName().toLowerCase().contains(userName.toLowerCase())) {
+                    System.out.println("filter: " + tempUser);
+                    users.add(tempUser);
+                }
             }
+        }
+        PagedListHolder<User> pagedListHolder = new PagedListHolder<User>(users);
+        pagedListHolder.setPageSize(10);
+        modelAndView.addObject("maxPages", pagedListHolder.getPageCount());
 
-        } catch (Exception e) {
-            System.out.println("PAGE not corrected value");
-            // TODO: handle exception
+        if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
+            page = 1;
         }
 
-
-        allDataSize=userService.getAllUserNumber();
-
-        numberOfPages=allDataSize%recordsPerPage==0?allDataSize/recordsPerPage:allDataSize/recordsPerPage+1;
-
-        map.put("currentPage", getPage());
-        map.put("noOfPages", numberOfPages);
-        map.put("user", user);
-        map.put("usersList", userService.showOnePage(page, recordsPerPage));
-
-        return "user";
-
-    }
-
-    @RequestMapping(value = "/user.do", method = RequestMethod.POST)
-    public String doActions(@ModelAttribute User user, BindingResult result, @RequestParam String action,
-                            Map<String, Object> map) {
-        User userResult = new User();
-        switch (action.toLowerCase()) {
-            case "add":
-                userService.add(user);
-                userResult = user;
-                break;
-
-            case "edit":
-                userService.edit(user);
-                userResult = user;
-                break;
-
-            case "delete":
-                userService.delete(user.getId());
-                userResult = user;
-                break;
-
-            case "search":
-                User searchedUser = userService.getUser(user.getId());
-                userResult = searchedUser != null ? searchedUser : new User();
-                break;
+        modelAndView.addObject("page", page);
+        if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
+            pagedListHolder.setPage(0);
+            modelAndView.addObject("listUsers", pagedListHolder.getPageList());
+        } else if (page <= pagedListHolder.getPageCount()) {
+            pagedListHolder.setPage(page - 1);
+            modelAndView.addObject("listUsers", pagedListHolder.getPageList());
         }
-        map.put("user", userResult);
-        map.put("usersList", userService.getAllUsers());
-        return "user";
-
+        return modelAndView;
     }
 }
