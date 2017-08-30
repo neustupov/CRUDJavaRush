@@ -1,6 +1,5 @@
 package ru.neustupov.dao.impl;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -38,28 +37,5 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List getAllUsers() {
         return sessionFactory.getCurrentSession().createQuery("FROM User").list();
-    }
-
-    @Override
-    public int getAllUserNumber() {
-        return ((Long) sessionFactory.getCurrentSession().
-                createQuery("SELECT COUNT(*) from User").uniqueResult()).intValue();
-    }
-
-    @Override
-    public List showOnePage(int page, int recordsPerPage) {
-        int begin;
-        begin=(page-1)*recordsPerPage;
-
-        Query query = sessionFactory.getCurrentSession().createQuery("from User");
-        query.setFirstResult(begin);
-        query.setMaxResults(recordsPerPage);
-        return query.list();
-    }
-
-    @Override
-    public User getUserByName(String name) {
-        String query="from User as user where user.name like '"+name+"'";
-        return (User) sessionFactory.getCurrentSession().createQuery(query).list().get(0);
     }
 }

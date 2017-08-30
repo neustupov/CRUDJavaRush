@@ -10,7 +10,4 @@ public interface UserService {
     public void delete(int id);
     public User getUser(int id);
     public List getAllUsers();
-    public int getAllUserNumber();
-    public List showOnePage(int page,int recordsPerPage);
-    public User getUserByName(String name);
 }

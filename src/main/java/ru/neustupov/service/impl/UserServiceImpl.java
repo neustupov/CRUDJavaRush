@@ -14,51 +14,33 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    @Transactional
     @Override
+    @Transactional
     public void add(User user) {
     userDao.add(user);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void edit(User user) {
         userDao.edit(user);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void delete(int id) {
         userDao.delete(id);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public User getUser(int id) {
         return userDao.getUser(id);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public List getAllUsers() {
         return userDao.getAllUsers();
-    }
-
-    @Transactional
-    @Override
-    public int getAllUserNumber() {
-        return userDao.getAllUserNumber();
-    }
-
-    @Transactional
-    @Override
-    public List showOnePage(int page, int recordsPerPage) {
-        return userDao.showOnePage(page, recordsPerPage);
-    }
-
-    @Transactional
-    @Override
-    public User getUserByName(String name) {
-        return userDao.getUserByName(name);
     }
 }
