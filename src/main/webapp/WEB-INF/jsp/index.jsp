@@ -326,7 +326,7 @@
                                 <c:forEach items="${listUsers}" var="user">
                                     <tr>
                                         <td align="center">${user.id}</td>
-                                        <td>${user.name}</td>
+                                        <td align="center">${user.name}</td>
                                         <td align="center">${user.age}</td>
                                         <c:if test="${user.getisAdmin()}">
                                             <td align="center"><img src="../../resources/checkcircle.png"></td>
