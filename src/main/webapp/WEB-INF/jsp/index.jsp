@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: promoscow
-  Date: 20.06.17
-  Time: 21:32
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
@@ -228,22 +221,22 @@
                                             </c:if>
                                                 <%--name--%>
                                             <tr>
-                                                <td class="font">
+                                                <td class="font" align="center">
                                                     <form:label path="name">
                                                         <spring:message text="Name:"/>
                                                     </form:label>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="form" colspan="2">
+                                                <td class="form" colspan="2" align="center">
                                                     <form:input placeholder="New user" cssClass="field" width="250px" path="name"/>
                                                 </td>
                                             </tr>
                                                 <%--age--%>
                                             <tr>
                                             <tr>
-                                                <td class="font">
-                                                    <form:label path="name">
+                                                <td class="font" align="center">
+                                                    <form:label path="age">
                                                         <spring:message text="Age:"/>
                                                     </form:label>
                                                 </td>

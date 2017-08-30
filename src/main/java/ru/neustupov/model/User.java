@@ -1,6 +1,7 @@
 package ru.neustupov.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -20,12 +21,12 @@ public class User {
     private boolean isAdmin;
 
     @Column(columnDefinition = "TIMESTAMP")
-    private Date date;
+    private Timestamp date;
 
     public User() {
     }
 
-    public User(int id, String name, int age, boolean isAdmin, Date date) {
+    public User(int id, String name, int age, boolean isAdmin, Timestamp date) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -69,7 +70,7 @@ public class User {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 }

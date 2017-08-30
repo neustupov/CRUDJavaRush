@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: promoscow
-  Date: 20.06.17
-  Time: 21:36
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
@@ -87,66 +79,5 @@
 
 <br/>
 <br/>
-<%--<c:url var="addAction" value="/users/add">--%>
-
-<%--<form:form action="${addAction}" commandName="user">--%>
-<%--<table>--%>
-<%--<c:if test="${!empty user.name}">--%>
-<%--<tr>--%>
-<%--<td>--%>
-<%--<form:label path="id">--%>
-<%--<spring:message text="ID"/>--%>
-<%--</form:label>--%>
-<%--</td>--%>
-<%--<td>--%>
-<%--<form:input path="id" readonly="true" size="8" disabled="true"/>--%>
-<%--<form:hidden path="id"/>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--</c:if>--%>
-<%--<tr>--%>
-<%--<td>--%>
-<%--<form:label path="name">--%>
-<%--<spring:message text="User name"/>--%>
-<%--</form:label>--%>
-<%--</td>--%>
-<%--<td>--%>
-<%--<form:input path="name"/>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--<tr>--%>
-<%--<td>--%>
-<%--<form:label path="age">--%>
-<%--<spring:message text="Age"/>--%>
-<%--</form:label>--%>
-<%--</td>--%>
-<%--<td>--%>
-<%--<form:input path="age"/>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--<tr>--%>
-<%--<td>--%>
-<%--<form:label path="admin">--%>
-<%--<spring:message text="isAdmin"/>--%>
-<%--</form:label>--%>
-<%--</td>--%>
-<%--<td>--%>
-<%--<form:input path="admin"/>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--<tr>--%>
-<%--<td>--%>
-<%--<form:label path="date">--%>
-<%--<spring:message text="createDate"/>--%>
-<%--</form:label>--%>
-<%--</td>--%>
-<%--<td>--%>
-<%--<form:input path="date"/>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--</table>--%>
-<%--</form:form>--%>
-<%--</c:url>--%>
-
 </body>
 </html>
