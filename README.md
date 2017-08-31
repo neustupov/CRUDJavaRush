@@ -4,6 +4,8 @@ CRUD приложение с пейджингом.
 
 Используюся - Spring MVC, Hibernate, Maven, TomCat, MySQL
 
+Скрипт наполнения базы - SQLBaseScrypt.sql
+
 Подключение к БД - localhost:3306/test
 login - root
 password - root
