@@ -50,16 +50,16 @@ public class UserController {
 
     /**
      * Изменение данных пользователя.
-     *
+     * <p>
      * Метод получает id и экземпляр модели.
      *
      * @param id
      * @param model
-     * @return
+     * @return редирект в root
      */
     @RequestMapping("/edit/{id}")
     public String editUser(@PathVariable("id") int id, Model model) {
-        UserController.id = userService.getUser(id).getId();
+        UserController.id = id;
         model.addAttribute("listUsers", userService.getAllUsers());
         return "redirect:/";
     }
@@ -72,15 +72,15 @@ public class UserController {
 
     /**
      * Метод пейджинга.
-     *
+     * <p>
      * Он срабатывает при запросе "/". Далее происходит следующее:
      * В метод передаётся номер страницы и поисковый запрос в String, если он есть.
      * Далее — если запрос есть — список наполняется только объектами User, имена которых содержат строку запроса.
      * Если его нет — копируется основной список.
-     *
+     * <p>
      * Список отправляется в модель, которую и возвращает метод.
      *
-     * @param page — номер страницы.
+     * @param page     — номер страницы.
      * @param userName — поисковый запрос.
      * @return модель, аттрибуты которой участвуют при наполнении списка.
      */
@@ -109,7 +109,7 @@ public class UserController {
             }
         }
         PagedListHolder<User> pagedListHolder = new PagedListHolder<User>(users);
-        pagedListHolder.setPageSize(10);
+        pagedListHolder.setPageSize(7);
         modelAndView.addObject("maxPages", pagedListHolder.getPageCount());
 
         if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
