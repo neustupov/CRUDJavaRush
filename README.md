@@ -6,8 +6,8 @@ CRUD приложение с пейджингом.
 
 Скрипт наполнения базы - SQLBaseScrypt.sql
 
-Подключение к БД - localhost:3306/test
-login - root
+Подключение к БД - localhost:3306/test  
+login - root  
 password - root
 
 Запуск -  http://localhost:8080   
