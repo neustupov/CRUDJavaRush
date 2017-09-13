@@ -334,10 +334,8 @@
                                         <c:if test="${!user.getisAdmin()}">
                                             <td align="center"></td>
                                         </c:if>
-                                            <%--<td align="center">${user.admin}</td>--%>
                                         <td align="center">${user.date}</td>
-                                            <%--<td align="center"><form:button path="/edit/${user.id}" value="EDIT" /></td>--%>
-                                        <td align="center"><a href="<c:url value='/edit/${user.id}'/>"><img src="../../resources/pencilcircle.png"></a></td>
+                                            <td align="center"><a href="<c:url value='/edit/${user.id}'/>"><img src="../../resources/pencilcircle.png"></a></td>
                                         <td align="center"><a href="<c:url value='/remove/${user.id}'/>"><img src="../../resources/closecircle2.png"></a></td>
                                     </tr>
                                 </c:forEach>

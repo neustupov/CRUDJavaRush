@@ -52,7 +52,7 @@
             <version>${org.springframework.version}</version>
         </dependency>
 
-        <!-- Hibernate resources -->
+        <!--  Hibernate resources  -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
